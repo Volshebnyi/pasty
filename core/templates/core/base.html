@@ -1,0 +1,13 @@
+{% load i18n %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{% block title %}{% trans 'Пирожки :-)' %}{% endblock title %}</title>
+        {% load staticfiles %}
+        <link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}" />
+    </head>
+    <body class="box">
+        {% block content %}
+        {% endblock content %}
+    </body>
+</html>

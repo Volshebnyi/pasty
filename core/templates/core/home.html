@@ -1,0 +1,16 @@
+{% extends "core/base.html" %}
+
+{% block content %}
+    <a class="nav sources" href="/sources">Источники &rarr;</a>
+    <div id="wrapper"></div>
+    <script type="text/javascript">
+        pasty = function() {
+            xmlhttp = new XMLHttpRequest();
+            xmlhttp.open("GET", "/one", false);
+            xmlhttp.send();
+            document.getElementById('wrapper').innerHTML = xmlhttp.responseText;
+        }
+        pasty();
+        setInterval(pasty, 15000);
+    </script>
+{% endblock content %}

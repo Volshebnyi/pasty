@@ -1,16 +1,15 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Синхронизация с источниками</title>
-    {% load staticfiles %}
-    <link rel="stylesheet" type="text/css" href="{% static 'core/style.css' %}" />
-</head>
-<body class="box">
+{% extends "core/base.html" %}
+
+{% block title %}
+    {% trans 'Синхронизация с источниками' %}
+{% endblock title %}
+
+{% block content %}
     <div class="sources">
-        <a class="nav" href="/">&larr; На главную</a>
+        <a class="nav" href="/">&larr; {% trans 'На главную' %}</a>
         <form action="{% url 'sync' %}" method="post">
             {% csrf_token %}
-            <h3>Источники</h3>
+            <h3>{% trans 'Источники' %}</h3>
             <ul>
             {% for s in sources %}
                 <li>
@@ -20,8 +19,7 @@
                 </li>
             {% endfor %}
             </ul>
-            <input type="submit" value="Синхронизировать"/>
+            <input type="submit" value="{% trans 'Синхронизировать' %}"/>
         </form>
     </div>
-</body>
-</html>
+{% endblock content %}

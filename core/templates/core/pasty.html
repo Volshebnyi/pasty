@@ -1,4 +1,8 @@
-<div class="box pasty">
-    <p class="box pre">{{ text }}</p>
-    <cite>&mdash;&nbsp;<a id="sig" target="blank" href="{{ source }}">{{ title }}</a></cite>
-</div>
+{% extends "core/base.html" %}
+
+{% block content %}
+    <div class="box pasty">
+        <p class="box pre">{{ text }}</p>
+        <cite>&mdash;&nbsp;<a id="sig" target="blank" href="{{ source }}">{{ title }}</a></cite>
+    </div>
+{% endblock content %}
