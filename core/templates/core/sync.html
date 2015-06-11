@@ -16,7 +16,15 @@
                 <li>
                     <input type="checkbox" name="source" id="source{{ forloop.counter }}" value="{{ s.id }}"/>
                     <a href="{{ s.url }}">{{ s.title }}</a>
-                    <span> ({{ s.sync_date }})</span>
+                    <span>
+                    (
+                        {% if s.sync_date %}
+                            {{ s.sync_date }}
+                        {% else %}
+                            {% trans 'Пока не синхронизировали' %}
+                        {% endif %}
+                    )
+                    </span>
                 </li>
             {% endfor %}
             </ul>
