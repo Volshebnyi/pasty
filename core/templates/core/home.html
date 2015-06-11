@@ -1,16 +1,26 @@
 {% extends "core/base.html" %}
+{% load i18n %}
 
 {% block content %}
-    <a class="nav sources" href="/sources">Источники &rarr;</a>
-    <div id="wrapper"></div>
+    <a class="nav sources" href="/sources">{% trans 'Источники' %} &rarr;</a>
+    <div id="wrapper">
+        <div class="box pasty">
+            {% if entry %}
+                <p class="box pre">{{ entry.text }}</p>
+                <cite>
+                    &mdash;&nbsp;
+                    <a id="sig" target="blank" href="{{ entry.source }}">
+                        {{ entry.title }}
+                    </a>
+                </cite>
+            {% else %}
+                {% trans 'Нету пирожков :-(' %}
+            {% endif %}
+        </div>
+    </div>
     <script type="text/javascript">
-        pasty = function() {
-            xmlhttp = new XMLHttpRequest();
-            xmlhttp.open("GET", "/one", false);
-            xmlhttp.send();
-            document.getElementById('wrapper').innerHTML = xmlhttp.responseText;
-        }
-        pasty();
-        setInterval(pasty, 15000);
+        setTimeout(function(){
+            document.location.reload();
+        }, 15000);
     </script>
 {% endblock content %}

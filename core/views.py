@@ -10,17 +10,10 @@ from core.sync import sync_rss_source
 
 
 def home(request):
-    context = {}
-    return render(request, 'core/home.html', context)
-
-
-def one(request):
-    p = Pasty.rnd()
-    if p:
-        context = {'text': p.text, 'source': p.source, 'title': p.source_title()}
-        return render(request, 'core/pasty.html', context)
-    else:
-        return HttpResponse(u'<div class="box pasty">Нету пирожков :-(</div>')
+    entry = Pasty.rnd()
+    return render(request, 'core/home.html', {
+        "entry": entry,
+    })
 
 
 def sources(request):
