@@ -2,7 +2,9 @@
 
 import os
 import re
+import random
 from urlparse import urlparse
+
 from django.db import models
 
 
@@ -27,7 +29,25 @@ class Pasty(models.Model):
     def rnd():
         if Pasty.objects.count() == 0:
             return None
-        return Pasty.objects.order_by('?')[0]
+
+        # random weighted choice here
+        candidates = Pasty.objects.order_by('?')[:5]
+
+        # give not so popular pasties some chance!
+        votes_handicap = 100
+        votes_min = min([i.votes for i in candidates])
+        choices = [(i, i.votes - votes_min + votes_handicap) for i in candidates]
+
+        total = sum(weight for item, weight in choices)
+        r = random.uniform(0, total)
+        upto = 0
+        for item, weight in choices:
+            if upto + weight > r:
+                return item
+            upto += weight
+
+        # this never happen
+        return None
 
 
 class Source(models.Model):
