@@ -10,9 +10,9 @@ from core.sync import sync_rss_source
 
 
 def home(request):
-    entry = Pasty.rnd()
+    pasty = Pasty.rnd()
     return render(request, 'core/home.html', {
-        "entry": entry,
+        "pasty": pasty,
     })
 
 

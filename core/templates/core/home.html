@@ -5,12 +5,12 @@
     <a class="nav sources" href="/sources">{% trans 'Источники' %} &rarr;</a>
     <div id="wrapper">
         <div class="box pasty">
-            {% if entry %}
-                <p class="box pre">{{ entry.text }}</p>
+            {% if pasty %}
+                <p class="box pre">{{ pasty.text }}</p>
                 <cite>
                     &mdash;&nbsp;
-                    <a id="sig" target="blank" href="{{ entry.source }}">
-                        {{ entry.title }}
+                    <a id="sig" target="blank" href="{{ pasty.source }}">
+                        {{ pasty.source_title }}
                     </a>
                 </cite>
             {% else %}

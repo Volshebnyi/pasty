@@ -16,6 +16,7 @@ class Pasty(models.Model):
     def short_text(self):
         return self.text[:37].replace(os.linesep, ' \ ') + '...'
 
+    @property
     def source_title(self):
         return urlparse(self.source).hostname
 
