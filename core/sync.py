@@ -1,7 +1,10 @@
 from datetime import datetime
 import os
 import re
+import urllib2
+
 import feedparser
+
 from core.models import Pasty, Source
 
 
@@ -63,11 +66,11 @@ class PastySourceParser(object):
             self.source.sync_date = sync_date
 
             for entry in data.entries:
-                pastry = self.parse_entry(entry)
-                # Save only if pastry is newer than previous sync date
-                if pastry and (not self.source.sync_date or pastry.date > self.source.sync_date):
-                    pastry.save()
-                    print('saved pastry %s' % pastry)
+                pasty = self.parse_entry(entry)
+                # Save only if pasty is newer than previous sync date
+                if pasty and self.is_new_pasty(pasty):
+                    pasty.save()
+                    print('saved pasty %s' % pasty)
 
             self.source.save()
             print('successful sync for date %s' % sync_date)
@@ -78,6 +81,12 @@ class PastySourceParser(object):
     def get_data(self):
         return ParserData.from_feedparser(
             feedparser.parse(self.source.sync_url))
+
+    def is_new_pasty(self, pasty):
+        if self.source.sync_date is None:
+            return True
+
+        return pasty.date >= self.source.sync_date
 
 
 class LiruParser(PastySourceParser):
@@ -110,9 +119,50 @@ class StishkipirozkiParser(PastySourceParser):
 
 class PerashkiParser(PastySourceParser):
     source_title = 'perashki.ru'
+    re_pasty = (
+        r'<div class="Text">([^<]+)</div>\s+'
+        r'<div class="Author"><a [^<]+</a>, '
+        r'<span class="date" title="\S+">(\S+)</span></div>'
+    )
 
     def parse_entry(self, entry):
-        raise NotImplementedError()
+        # fake sync_date to remove duplicates
+
+        text, date = entry
+        p = Pasty()
+        p.text = self.strip(text)
+
+        # set latest time possible for proper sync
+        date = datetime.strptime(date, '%d.%m.%Y')
+        date = date.replace(hour=23, minute=59, second=59)
+        p.date = date
+
+        p.source = self.source.url
+        return p
+
+    def get_data(self):
+        # goddamit
+        # ok, let's parse HTML with regexps
+        entries = []
+        html = urllib2.urlopen(self.source.sync_url).read().decode('utf8')
+        for m in re.findall(self.re_pasty, html, re.MULTILINE):
+            entries.append(m)
+
+        return ParserData(entries, datetime.now())
+
+    def is_new_pasty(self, pasty):
+        if self.source.sync_date is None:
+            return True
+
+        if pasty.date < self.source.sync_date:
+            return False
+
+        # directly compare today entries to prevent duplicates
+        for today_pasty in Pasty.objects.filter(date=pasty.date):
+            if today_pasty.text == pasty.text:
+                return False
+
+        return True
 
 
 PARSERS = [

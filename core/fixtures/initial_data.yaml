@@ -3,6 +3,7 @@
   fields:
     title: perashki.ru
     url: http://www.perashki.ru/
+    sync_url: http://www.perashki.ru/Piro/New/
 - model: core.source
   pk: 2
   fields:
