@@ -29,20 +29,24 @@ class ParserData(object):
 class PastySourceParser(object):
     source_title = None
 
+    strip_pattern = re.compile('</?p>|</?div>', flags=re.MULTILINE)
+    br_pattern = re.compile('<br ?/?>\s*', flags=re.MULTILINE)
+    newline_pattern = re.compile('\n *', flags=re.MULTILINE)
+    space_pattern = re.compile(' +')
+
     def __init__(self):
         self.source = Source.objects.get(title=self.source_title)
 
     def parse_entry(self, sync_date, source, entry):
         raise NotImplementedError()
 
-    @staticmethod
-    def strip(text):
-        strip_pattern = re.compile('</?p>|</?div>')
-        br_pattern = re.compile('<br ?/?>')
-        space_pattern = re.compile('\s\s+')
-        text = strip_pattern.sub('', text)
-        text = space_pattern.sub(' ', text)
-        text = br_pattern.sub(os.linesep, text)
+    @classmethod
+    def strip(cls, text):
+
+        text = cls.strip_pattern.sub('', text)
+        text = cls.space_pattern.sub(' ', text)
+        text = cls.br_pattern.sub(os.linesep, text)
+        text = text.replace('\n', os.linesep)
         return text
 
     @staticmethod
