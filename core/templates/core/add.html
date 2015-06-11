@@ -1,0 +1,15 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+
+{% block title %}
+    {% trans 'Добавить ручками' %}
+{% endblock title %}
+
+{% block content %}
+    <form method="post">
+        {% csrf_token %}
+        <h3>{% trans 'Добавить ручками' %}</h3>
+        {{ form.as_p }}
+        <input type="submit" value="{% trans 'Добавить' %}"/>
+    </form>
+{% endblock content %}

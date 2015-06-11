@@ -7,7 +7,7 @@ admin.autodiscover()
 urlpatterns = patterns(
     '',
     url(r'^$', 'core.views.home', name='home'),
-    url(r'^sources$', 'core.views.sources', name='sources'),
+    url(r'^add$', 'core.views.add_entry', name='add'),
     url(r'^sync$', 'core.views.sync', name='sync'),
     # url(r'^pasty/', include('pasty.foo.urls')),
 
