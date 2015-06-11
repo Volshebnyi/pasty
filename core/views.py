@@ -6,7 +6,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from core.models import Pasty
 from core.models import Source
-from core.sync import sync_rss_source
+from core.sync import PARSERS
 
 
 def home(request):
@@ -23,8 +23,8 @@ def sources(request):
 
 def sync(request):
     if request.POST:
-        sources_id = request.POST.getlist('source')
-        for src_id in sources_id:
-            source = Source.objects.get(pk=src_id)
-            sync_rss_source(source)
+        sources_id = [int(i) for i in request.POST.getlist('source')]
+        for parser in PARSERS:
+            if parser.source.id in sources_id:
+                parser.parse()
     return HttpResponseRedirect(reverse('sources'))
