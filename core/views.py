@@ -10,21 +10,20 @@ from core.sync import sync_rss_source
 
 
 def home(request):
-    pasty = Pasty.rnd()
     return render(request, 'core/home.html', {
-        "pasty": pasty,
+        "pasty": Pasty.rnd(),
     })
 
 
 def sources(request):
-    sources = Source.objects.all()
-    context = {'sources': sources}
-    return render(request, 'core/sync.html', context)
+    return render(request, 'core/sync.html', {
+        'sources': Source.objects.all()
+    })
 
 
 def sync(request):
-    sources_id = request.POST.getlist('source')
-    if sources_id:
+    if request.POST:
+        sources_id = request.POST.getlist('source')
         for src_id in sources_id:
             source = Source.objects.get(pk=src_id)
             sync_rss_source(source)
