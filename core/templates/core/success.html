@@ -1,0 +1,15 @@
+{% extends "core/base.html" %}
+{% load i18n %}
+
+{% block title %}
+    {% trans 'Всё прошло хорошо!' %}
+{% endblock title %}
+
+{% block content %}
+    <div class="sources">
+        <a class="nav" href="{% url 'home' %}">&larr; {% trans 'На главную' %}</a>
+        <div>
+            <h3>{% trans 'Всё прошло хорошо!' %}</h3>
+        </div>
+    </div>
+{% endblock content %}
