@@ -59,11 +59,11 @@ class PastySourceParser(object):
             sync_date = datetime.now()
             sync_date = data.date
 
+            print len(data.entries), self.source.sync_date
+
             if self.source.sync_date and self.source.sync_date >= sync_date:
                 print('source is already up to date')
                 return
-
-            self.source.sync_date = sync_date
 
             for entry in data.entries:
                 pasty = self.parse_entry(entry)
@@ -72,6 +72,7 @@ class PastySourceParser(object):
                     pasty.save()
                     print('saved pasty %s' % pasty)
 
+            self.source.sync_date = sync_date
             self.source.save()
             print('successful sync for date %s' % sync_date)
         except Exception as e:
@@ -99,6 +100,7 @@ class LiruParser(PastySourceParser):
         if not p.date:
             p.date = self.source.sync_date
         p.source = self.source.url
+
         if len(p.text) > 255:
             return None
         return p
@@ -109,7 +111,7 @@ class StishkipirozkiParser(PastySourceParser):
 
     def parse_entry(self, entry):
         p = Pasty()
-        p.text = self.strip(entry['content'][0]['value'])
+        p.text = self.strip(entry['summary_detail']['value'])
         p.date = self.to_date(entry['published_parsed'])
         if not p.date:
             p.date = self.source.sync_date

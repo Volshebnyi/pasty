@@ -15,4 +15,4 @@
   fields:
     title: stishkipirozhki.ru
     url: http://www.stishkipirozhki.ru
-    sync_url: http://www.stishkipirozhki.ru/?feed=rss2
+    sync_url: http://www.stishkipirozhki.ru/rss/
