@@ -55,11 +55,8 @@ class PastySourceParser(object):
         print('feeding data from ' + self.source.title)
         try:
             data = self.get_data()
-
             sync_date = datetime.now()
             sync_date = data.date
-
-            print len(data.entries), self.source.sync_date
 
             if self.source.sync_date and self.source.sync_date >= sync_date:
                 print('source is already up to date')
