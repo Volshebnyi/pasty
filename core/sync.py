@@ -130,7 +130,6 @@ class PerashkiParser(PastySourceParser):
 
     def parse_entry(self, entry):
         # fake sync_date to remove duplicates
-
         text, date = entry
         p = Pasty()
         p.text = self.strip(text)
