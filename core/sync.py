@@ -97,6 +97,7 @@ class LiruParser(PastySourceParser):
     def parse_entry(self, entry):
         p = Pasty()
         p.text = self.strip(entry['summary_detail']['value'])
+        p.votes = int(entry['lj_reply-count'])
         p.date = self.to_date(entry['published_parsed'])
         if not p.date:
             p.date = self.source.sync_date
