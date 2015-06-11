@@ -59,13 +59,16 @@ class PastySourceParser(object):
             if self.source.sync_date and self.source.sync_date >= sync_date:
                 print('source is already up to date')
                 return
+
+            self.source.sync_date = sync_date
+
             for entry in data.entries:
-                pastry = self.parse_entry(sync_date, self.source, entry)
+                pastry = self.parse_entry(entry)
                 # Save only if pastry is newer than previous sync date
                 if pastry and (not self.source.sync_date or pastry.date > self.source.sync_date):
                     pastry.save()
                     print('saved pastry %s' % pastry)
-            self.source.sync_date = sync_date
+
             self.source.save()
             print('successful sync for date %s' % sync_date)
         except Exception as e:
@@ -80,13 +83,13 @@ class PastySourceParser(object):
 class LiruParser(PastySourceParser):
     source_title = 'pirozhki-ru.livejournal.com'
 
-    def parse_entry(self, sync_date, source, entry):
+    def parse_entry(self, entry):
         p = Pasty()
         p.text = self.strip(entry['summary_detail']['value'])
         p.date = self.to_date(entry['published_parsed'])
         if not p.date:
-            p.date = sync_date
-        p.source = source.url
+            p.date = self.source.sync_date
+        p.source = self.source.url
         if len(p.text) > 255:
             return None
         return p
@@ -95,20 +98,20 @@ class LiruParser(PastySourceParser):
 class StishkipirozkiParser(PastySourceParser):
     source_title = 'stishkipirozhki.ru'
 
-    def parse_entry(self, sync_date, source, entry):
+    def parse_entry(self, entry):
         p = Pasty()
         p.text = self.strip(entry['content'][0]['value'])
         p.date = self.to_date(entry['published_parsed'])
         if not p.date:
-            p.date = sync_date
-        p.source = source.url
+            p.date = self.source.sync_date
+        p.source = self.source.url
         return p
 
 
 class PerashkiParser(PastySourceParser):
     source_title = 'perashki.ru'
 
-    def parse_entry(self, sync_date, source, entry):
+    def parse_entry(self, entry):
         raise NotImplementedError()
 
 
