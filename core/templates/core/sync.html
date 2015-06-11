@@ -7,7 +7,7 @@
 
 {% block content %}
     <div class="sources">
-        <a class="nav" href="/">&larr; {% trans 'На главную' %}</a>
+        <a class="nav" href="{% url 'home' %}">&larr; {% trans 'На главную' %}</a>
         <form method="post">
             {% csrf_token %}
             <h3>{% trans 'Источники' %}</h3>

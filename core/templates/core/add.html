@@ -6,10 +6,13 @@
 {% endblock title %}
 
 {% block content %}
-    <form method="post">
-        {% csrf_token %}
-        <h3>{% trans 'Добавить ручками' %}</h3>
-        {{ form.as_p }}
-        <input type="submit" value="{% trans 'Добавить' %}"/>
-    </form>
+    <div class="sources">
+        <a class="nav" href="{% url 'home' %}">&larr; {% trans 'На главную' %}</a>
+        <form method="post">
+            {% csrf_token %}
+            <h3>{% trans 'Добавить ручками' %}</h3>
+            {{ form.as_ul }}
+            <input type="submit" value="{% trans 'Добавить' %}"/>
+        </form>
+    </div>
 {% endblock content %}

@@ -13,7 +13,11 @@ import forms
 
 
 def home(request):
-    return render(request, 'core/home.html', {
+    return render(request, 'core/home.html')
+
+
+def kiosk(request):
+    return render(request, 'core/kiosk.html', {
         "pasty": Pasty.rnd(),
     })
 
@@ -24,7 +28,7 @@ def add_entry(request):
         if form.is_valid():
             pasty = Pasty(
                 text=form.cleaned_data['text'],
-                source=form.cleaned_data['source'],
+                source_title=form.cleaned_data['source_title'],
                 date=datetime.datetime.now(),
                 votes=form.cleaned_data['votes'],
             )

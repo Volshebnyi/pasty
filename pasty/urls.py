@@ -9,6 +9,7 @@ urlpatterns = patterns(
     url(r'^$', 'core.views.home', name='home'),
     url(r'^add$', 'core.views.add_entry', name='add'),
     url(r'^sync$', 'core.views.sync', name='sync'),
+    url(r'^kiosk$', 'core.views.kiosk', name='kiosk'),
     # url(r'^pasty/', include('pasty.foo.urls')),
 
     # Uncomment the admin/doc line below to enable admin documentation:

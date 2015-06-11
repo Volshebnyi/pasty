@@ -8,7 +8,7 @@ class AddForm(forms.Form):
         label=u'Текст пирожка',
         max_length=100,
         widget=forms.Textarea)
-    source = forms.CharField(label=u'Источник', max_length=100, initial='Наша компания')
+    source_title = forms.CharField(label=u'Источник', max_length=100, initial='Наша компания')
     votes = forms.IntegerField(
         label=u'Голоса (чем больше - тем чаще показывается)',
         initial='100')
